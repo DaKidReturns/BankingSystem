@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
@@ -22,8 +23,13 @@ public class AccountPage extends javax.swing.JFrame {
      * Creates new form AccountPage
      */
     public AccountPage() {
-        //balance = 0;
+        //balance = 0;0
         //accNumber = 10023;
+        String[] loanTabColNames= {
+                "No.","Loan Type","Principle" ,"Interest","Years"
+        };
+        loanTypes = new DefaultComboBoxModel<String>();
+        getLoanTypes(loanTypes);
         initComponents();
     }
 
@@ -51,6 +57,14 @@ public class AccountPage extends javax.swing.JFrame {
         depositButton = new javax.swing.JButton();
         depositAmount = new javax.swing.JSpinner();
         Loan = new javax.swing.JPanel();
+        loanTypeLabel = new javax.swing.JLabel();
+        loanTypeCombo = new javax.swing.JComboBox<>();
+        loanAmountLabel = new javax.swing.JLabel();
+        yearsLabel = new javax.swing.JLabel();
+        intrestLabel = new javax.swing.JLabel();
+        requestLoan = new javax.swing.JButton();
+        intrestAmount = new javax.swing.JLabel();
+        yearsValue = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Account");
@@ -155,15 +169,75 @@ public class AccountPage extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Deposit", Deposit);
 
+        loanTypeLabel.setText("Select Loan Type");
+
+        loanTypeCombo.setModel(loanTypes);
+        loanTypeCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loanTypeComboActionPerformed(evt);
+            }
+        });
+
+        loanAmountLabel.setText("Select Loan Amount");
+
+        yearsLabel.setText("Years:");
+
+        intrestLabel.setText("Intrest:");
+
+        requestLoan.setText("Request Loan");
+        requestLoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                requestLoanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout LoanLayout = new javax.swing.GroupLayout(Loan);
         Loan.setLayout(LoanLayout);
         LoanLayout.setHorizontalGroup(
             LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 703, Short.MAX_VALUE)
+            .addGroup(LoanLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LoanLayout.createSequentialGroup()
+                        .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(loanTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loanTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
+                        .addGap(153, 153, 153)
+                        .addComponent(loanAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(100, Short.MAX_VALUE))
+                    .addGroup(LoanLayout.createSequentialGroup()
+                        .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(intrestLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                            .addComponent(yearsLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(yearsValue, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                            .addComponent(intrestAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(requestLoan, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))))
         );
         LoanLayout.setVerticalGroup(
             LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(LoanLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loanTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loanAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loanTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(intrestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(intrestAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(requestLoan)
+                    .addComponent(yearsValue, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(LoanLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(yearsLabel)))
+                .addGap(24, 24, 24))
         );
 
         jTabbedPane1.addTab("Loan", Loan);
@@ -291,9 +365,35 @@ public class AccountPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_depositButtonActionPerformed
 
+    private void loanTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loanTypeComboActionPerformed
+        javax.swing.JComboBox<String> cb = (javax.swing.JComboBox<String>) evt.getSource();
+        String loanType = (String)cb.getSelectedItem();
+        try {
+            Statement st = Main.conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM LOANTYPETAB WHERE LOANNAME = '"+loanType+"'");
+            while(rs.next()){
+                loanIntrest = rs.getDouble("INTREST");
+                loanYears = rs.getInt("NUMYEARS");
+            }
+            intrestAmount.setText(String.valueOf(loanIntrest));
+            yearsValue.setText(String.valueOf(loanYears));
+            intrestAmount.repaint();
+            yearsValue.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountPage.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(withdrawAmount,
+            ex.toString(),
+            "Error Occured",
+            JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_loanTypeComboActionPerformed
+
+    private void requestLoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestLoanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_requestLoanActionPerformed
+
     public void setAccountDetails(String accNumber,String userName){
         try{
-
             Statement st = Main.conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM ACCOUNT WHERE Accountno = "+accNumber);
             if(rs.next()){
@@ -309,6 +409,24 @@ public class AccountPage extends javax.swing.JFrame {
         this.userName = userName;
         this.repaint();
         System.out.println(balance+"  "+accNumber);
+    }
+    
+    private static void getLoanTypes(DefaultComboBoxModel<String> loanTypes){
+        loanTypes.addElement("Select Loan Type");
+        try {
+            Statement st = Main.conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT LOANNAME FROM LOANTYPETAB");
+            while(rs.next()){
+                loanTypes.addElement(rs.getString("LOANNAME"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountPage.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(Main.accountPage,
+                ex.toString(),
+                "SQL Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    
     }
     
     /**
@@ -349,7 +467,10 @@ public class AccountPage extends javax.swing.JFrame {
     
     private int balance;
     private int accNumber;
+    private double loanIntrest;
+    private int loanYears;
     private String userName;
+    private DefaultComboBoxModel<String> loanTypes;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -365,8 +486,16 @@ public class AccountPage extends javax.swing.JFrame {
     private javax.swing.JButton depositButton;
     private javax.swing.JLabel enterAmountDeposit;
     private javax.swing.JLabel enterWithdrawAmountLabel;
+    private javax.swing.JLabel intrestAmount;
+    private javax.swing.JLabel intrestLabel;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel loanAmountLabel;
+    private javax.swing.JComboBox<String> loanTypeCombo;
+    private javax.swing.JLabel loanTypeLabel;
+    private javax.swing.JButton requestLoan;
     private javax.swing.JSpinner withdrawAmount;
     private javax.swing.JButton withdrawButton;
+    private javax.swing.JLabel yearsLabel;
+    private javax.swing.JLabel yearsValue;
     // End of variables declaration//GEN-END:variables
 }
