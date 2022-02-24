@@ -37,6 +37,9 @@ public class AccountPage extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         Withdraw = new javax.swing.JPanel();
+        enterAmountLabel = new javax.swing.JLabel();
+        amountField = new javax.swing.JSpinner();
+        withdrawbutton = new javax.swing.JLabel();
         Deposit = new javax.swing.JPanel();
         Loan = new javax.swing.JPanel();
 
@@ -61,15 +64,52 @@ public class AccountPage extends javax.swing.JFrame {
 
         jTabbedPane1.setName(""); // NOI18N
 
+        enterAmountLabel.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
+        enterAmountLabel.setText("Enter Amount");
+
+        withdrawbutton.setBackground(new java.awt.Color(254, 254, 254));
+        withdrawbutton.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 24)); // NOI18N
+        withdrawbutton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        withdrawbutton.setText("Withdraw");
+        withdrawbutton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        withdrawbutton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        withdrawbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                withdrawbuttonMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                withdrawbuttonMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                withdrawbuttonMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout WithdrawLayout = new javax.swing.GroupLayout(Withdraw);
         Withdraw.setLayout(WithdrawLayout);
         WithdrawLayout.setHorizontalGroup(
             WithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 703, Short.MAX_VALUE)
+            .addGroup(WithdrawLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(WithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(enterAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, WithdrawLayout.createSequentialGroup()
+                .addContainerGap(390, Short.MAX_VALUE)
+                .addComponent(withdrawbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(112, 112, 112))
         );
         WithdrawLayout.setVerticalGroup(
             WithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(WithdrawLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(enterAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(withdrawbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
 
         jTabbedPane1.addTab("Withdraw", Withdraw);
@@ -153,6 +193,20 @@ public class AccountPage extends javax.swing.JFrame {
         Main.userPage.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void withdrawbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_withdrawbuttonMouseClicked
+        int amount = (int)amountField.getValue();
+        System.out.println("Amount printed: "+amount);
+        
+    }//GEN-LAST:event_withdrawbuttonMouseClicked
+
+    private void withdrawbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_withdrawbuttonMouseReleased
+        withdrawbutton.setBackground(new java.awt.Color(254, 254, 254));
+    }//GEN-LAST:event_withdrawbuttonMouseReleased
+
+    private void withdrawbuttonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_withdrawbuttonMousePressed
+        withdrawbutton.setBackground(new java.awt.Color(90, 90, 90));
+    }//GEN-LAST:event_withdrawbuttonMousePressed
+
     public void setAccountDetails(String accNumber,String userName){
         try{
 
@@ -218,9 +272,12 @@ public class AccountPage extends javax.swing.JFrame {
     private javax.swing.JPanel Withdraw;
     private javax.swing.JLabel accountNumber;
     private javax.swing.JLabel accountNumberLabel;
+    private javax.swing.JSpinner amountField;
     private javax.swing.JLabel balanceAmount;
     private javax.swing.JLabel balanceLabel;
+    private javax.swing.JLabel enterAmountLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel withdrawbutton;
     // End of variables declaration//GEN-END:variables
 }
