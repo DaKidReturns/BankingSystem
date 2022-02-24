@@ -8,6 +8,10 @@
  * @author rohit
  */
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     public static Connection conn;
     public static LoginPage loginPage;
@@ -21,6 +25,11 @@ public class Main {
         accountPage = null;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex  ) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 loginPage = new LoginPage();
                 loginPage.setVisible(true);
             }

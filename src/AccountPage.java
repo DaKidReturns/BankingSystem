@@ -9,6 +9,12 @@
  */
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 
 public class AccountPage extends javax.swing.JFrame {
 
@@ -34,13 +40,16 @@ public class AccountPage extends javax.swing.JFrame {
         accountNumber = new javax.swing.JLabel();
         balanceLabel = new javax.swing.JLabel();
         balanceAmount = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         Withdraw = new javax.swing.JPanel();
-        enterAmountLabel = new javax.swing.JLabel();
-        amountField = new javax.swing.JSpinner();
-        withdrawbutton = new javax.swing.JLabel();
+        enterWithdrawAmountLabel = new javax.swing.JLabel();
+        withdrawAmount = new javax.swing.JSpinner();
+        withdrawButton = new javax.swing.JButton();
         Deposit = new javax.swing.JPanel();
+        enterAmountDeposit = new javax.swing.JLabel();
+        depositButton = new javax.swing.JButton();
+        depositAmount = new javax.swing.JSpinner();
         Loan = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,33 +64,24 @@ public class AccountPage extends javax.swing.JFrame {
 
         balanceAmount.setText(String.valueOf(balance));
 
-        jButton1.setText("Back");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
         jTabbedPane1.setName(""); // NOI18N
 
-        enterAmountLabel.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
-        enterAmountLabel.setText("Enter Amount");
+        enterWithdrawAmountLabel.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
+        enterWithdrawAmountLabel.setText("Enter Amount");
 
-        withdrawbutton.setBackground(new java.awt.Color(254, 254, 254));
-        withdrawbutton.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 24)); // NOI18N
-        withdrawbutton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        withdrawbutton.setText("Withdraw");
-        withdrawbutton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        withdrawbutton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        withdrawbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                withdrawbuttonMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                withdrawbuttonMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                withdrawbuttonMouseReleased(evt);
+        withdrawAmount.setModel(new SpinnerNumberModel(0.0,0.0,999_999_999.99,1));
+
+        withdrawButton.setText("Withdraw");
+        withdrawButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                withdrawButtonActionPerformed(evt);
             }
         });
 
@@ -92,37 +92,65 @@ public class AccountPage extends javax.swing.JFrame {
             .addGroup(WithdrawLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(WithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(enterAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(withdrawAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(enterWithdrawAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(393, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, WithdrawLayout.createSequentialGroup()
-                .addContainerGap(390, Short.MAX_VALUE)
-                .addComponent(withdrawbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(112, 112, 112))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(withdrawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45))
         );
         WithdrawLayout.setVerticalGroup(
             WithdrawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(WithdrawLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(enterAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(enterWithdrawAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(withdrawbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                .addComponent(withdrawAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(withdrawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Withdraw", Withdraw);
+
+        enterAmountDeposit.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
+        enterAmountDeposit.setText("Enter Amount");
+
+        depositButton.setText("Deposit");
+        depositButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                depositButtonActionPerformed(evt);
+            }
+        });
+
+        depositAmount.setModel(new SpinnerNumberModel(0.0,0.0,999_999_999.99,1));
 
         javax.swing.GroupLayout DepositLayout = new javax.swing.GroupLayout(Deposit);
         Deposit.setLayout(DepositLayout);
         DepositLayout.setHorizontalGroup(
             DepositLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 703, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DepositLayout.createSequentialGroup()
+                .addContainerGap(384, Short.MAX_VALUE)
+                .addComponent(depositButton, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(83, 83, 83))
+            .addGroup(DepositLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(DepositLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(depositAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(enterAmountDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         DepositLayout.setVerticalGroup(
             DepositLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(DepositLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(enterAmountDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(depositAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(depositButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Deposit", Deposit);
@@ -159,7 +187,7 @@ public class AccountPage extends javax.swing.JFrame {
                             .addComponent(accountNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                             .addComponent(balanceAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -173,7 +201,7 @@ public class AccountPage extends javax.swing.JFrame {
                             .addComponent(accountNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(balanceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
@@ -187,25 +215,81 @@ public class AccountPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+
         Main.accountPage.setVisible(false);
         Main.userPage.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_backButtonActionPerformed
 
-    private void withdrawbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_withdrawbuttonMouseClicked
-        int amount = (int)amountField.getValue();
-        System.out.println("Amount printed: "+amount);
-        
-    }//GEN-LAST:event_withdrawbuttonMouseClicked
+    private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
+        try {
+            withdrawAmount.commitEdit();
+            double amount = (double)withdrawAmount.getValue();
+            System.out.println("Amount printed: "+amount);
+            if(amount<=0){
+                JOptionPane.showMessageDialog(Main.accountPage,
+                        "Enter a value more than 0",
+                        "Very small value",
+                        JOptionPane.ERROR_MESSAGE);
+            }else{
+                try {
+                    Statement st = Main.conn.createStatement();
+                    st.executeUpdate("UPDATE ACCOUNT SET BALANCE = BALANCE - " + amount);
+                    JOptionPane.showMessageDialog(Main.accountPage,
+                        "Withdrawn Rs." + amount +" ",
+                        "Success",
+                        JOptionPane.PLAIN_MESSAGE);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountPage.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(Main.accountPage,
+                        ex.toString(),
+                        "SQL Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+                setAccountDetails(String.valueOf(accNumber),userName);
+            }
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(withdrawAmount,
+            "Enter a Proper value",
+            "Error Occured",
+            JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_withdrawButtonActionPerformed
 
-    private void withdrawbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_withdrawbuttonMouseReleased
-        withdrawbutton.setBackground(new java.awt.Color(254, 254, 254));
-    }//GEN-LAST:event_withdrawbuttonMouseReleased
-
-    private void withdrawbuttonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_withdrawbuttonMousePressed
-        withdrawbutton.setBackground(new java.awt.Color(90, 90, 90));
-    }//GEN-LAST:event_withdrawbuttonMousePressed
+    private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
+        try {
+            depositAmount.commitEdit();
+            double amount = (double)depositAmount.getValue();
+            System.out.println("Amount printed: "+amount);
+            if(amount<=0){
+                JOptionPane.showMessageDialog(Main.accountPage,
+                        "Enter a value more than 0",
+                        "Very small value",
+                        JOptionPane.ERROR_MESSAGE);
+            }else{
+                try {
+                    Statement st = Main.conn.createStatement();
+                    st.executeUpdate("UPDATE ACCOUNT SET BALANCE = BALANCE + " + amount);
+                    JOptionPane.showMessageDialog(Main.accountPage,
+                        "Deposited Rs." + amount +" ",
+                        "Success",
+                        JOptionPane.PLAIN_MESSAGE);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountPage.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(Main.accountPage,
+                        ex.toString(),
+                        "SQL Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+                setAccountDetails(String.valueOf(accNumber),userName);
+            }
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(withdrawAmount,
+            "Enter a Proper value",
+            "Error Occured",
+            JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_depositButtonActionPerformed
 
     public void setAccountDetails(String accNumber,String userName){
         try{
@@ -222,8 +306,9 @@ public class AccountPage extends javax.swing.JFrame {
         this.accNumber = Integer.parseInt(accNumber);
         this.accountNumber.setText(String.valueOf(accNumber));
         this.balanceAmount.setText(String.valueOf(balance));
+        this.userName = userName;
         this.repaint();
-         System.out.println(balance+"  "+accNumber);
+        System.out.println(balance+"  "+accNumber);
     }
     
     /**
@@ -264,6 +349,7 @@ public class AccountPage extends javax.swing.JFrame {
     
     private int balance;
     private int accNumber;
+    private String userName;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -272,12 +358,15 @@ public class AccountPage extends javax.swing.JFrame {
     private javax.swing.JPanel Withdraw;
     private javax.swing.JLabel accountNumber;
     private javax.swing.JLabel accountNumberLabel;
-    private javax.swing.JSpinner amountField;
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel balanceAmount;
     private javax.swing.JLabel balanceLabel;
-    private javax.swing.JLabel enterAmountLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JSpinner depositAmount;
+    private javax.swing.JButton depositButton;
+    private javax.swing.JLabel enterAmountDeposit;
+    private javax.swing.JLabel enterWithdrawAmountLabel;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel withdrawbutton;
+    private javax.swing.JSpinner withdrawAmount;
+    private javax.swing.JButton withdrawButton;
     // End of variables declaration//GEN-END:variables
 }
