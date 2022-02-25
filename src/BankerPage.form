@@ -6,7 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -28,27 +28,29 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel2" max="32767" attributes="0"/>
-                          <Component id="jLabel1" max="32767" attributes="0"/>
+                          <Component id="joinDateLabe" max="32767" attributes="0"/>
+                          <Component id="nameLabel" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <Component id="nameField" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateField" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                      <Component id="addUserButton" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="addUserButton" pref="130" max="32767" attributes="0"/>
+                          <Component id="approveLoanButton" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="viewUserListButton" pref="130" max="32767" attributes="0"/>
+                          <Component id="addAccountButton" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="198" max="32767" attributes="0"/>
+              <EmptySpace pref="370" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,35 +59,48 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nameLabel" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                  <Component id="nameField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="joinDateLabe" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="addUserButton" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="jButton1" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="jButton3" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                  <Component id="addAccountButton" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="340" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="approveLoanButton" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
+                  <Component id="viewUserListButton" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="220" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="nameLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Name"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="joinDateLabe">
       <Properties>
         <Property name="text" type="java.lang.String" value="Join Date "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nameField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;User Code&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="dateField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;User Code&gt;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="addUserButton">
@@ -96,35 +111,28 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addUserButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;User Code&gt;"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;User Code&gt;"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="addAccountButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add Account"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addAccountButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="approveLoanButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Approve Loan"/>
+        <Property name="text" type="java.lang.String" value="Loan List"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="approveLoanButtonActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="viewUserListButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="View UserList"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewUserListButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

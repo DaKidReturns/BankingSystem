@@ -199,8 +199,8 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void userNameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userNameTextFieldFocusGained
         // TODO add your handling code here:
-        userNameTextField.setText("AISHWARYA");
-        passwordField.setText("AISHU@2000$");
+        userNameTextField.setText("ARAVIND_NAIR");
+        passwordField.setText("SUNSHINE$");
     }//GEN-LAST:event_userNameTextFieldFocusGained
 
     private static boolean checkCred(String username, char[] password){

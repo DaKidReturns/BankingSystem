@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 public class UserPage extends javax.swing.JFrame {
 
     /**
@@ -19,13 +21,14 @@ public class UserPage extends javax.swing.JFrame {
      */
     public UserPage(String username) {
         this.username = username;
-        accountList = new ArrayList<Integer>();
+        accountListModel = new DefaultComboBoxModel<String>();
         getDetails();
         initComponents();
     }
 
     private void getDetails(){
         // Using username getDetails from the database
+        accountListModel.addElement("Select Account Number");
         try{
             Statement st = Main.conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM CUSTOMER WHERE USERNAME = \""+username+"\"");
@@ -37,7 +40,7 @@ public class UserPage extends javax.swing.JFrame {
             rs = st.executeQuery("SELECT ACCOUNTNO, BALANCE FROM CUSTOMER C JOIN ACCOUNT A ON C.CUSTOMER_ID = A.CUSTOMER_ID WHERE C.CUSTOMER_ID = " + customerId);
             int i =0;
             while(rs.next()){
-                accountList.add(rs.getInt("ACCOUNTNO"));
+                accountListModel.addElement(String.valueOf(rs.getInt("ACCOUNTNO")));
                 i++;
             }
             numAccounts = i;
@@ -59,10 +62,10 @@ public class UserPage extends javax.swing.JFrame {
         nameLabel = new javax.swing.JLabel();
         addressLabel = new javax.swing.JLabel();
         addressText = new javax.swing.JLabel();
-        userAccountInfo = new javax.swing.JScrollPane();
-        userAccountPanel = new javax.swing.JPanel();
         selectAccountText = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
+        accountComboBox = new javax.swing.JComboBox<>();
+        openAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Welcome User!");
@@ -81,30 +84,24 @@ public class UserPage extends javax.swing.JFrame {
         addressText.setText(address
         );
 
-        userAccountInfo.setAutoscrolls(true);
-
-        userAccountPanel.setLayout(new java.awt.GridLayout(numAccounts, 0));
-        javax.swing.JButton button;
-        for(int i = 0; i<numAccounts; i++){
-            button =  new javax.swing.JButton();
-            button.setText(""+accountList.get(i));
-            button.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt){
-                    accountButtonActionPerformed(evt);
-                }
-            });
-            userAccountPanel.add(button);
-
-        }
-        userAccountPanel.repaint();
-        userAccountInfo.setViewportView(userAccountPanel);
-
         selectAccountText.setText("Select the required account:");
 
+        logoutButton.setBackground(new java.awt.Color(255, 94, 94));
+        logoutButton.setForeground(new java.awt.Color(26, 26, 26));
         logoutButton.setText("Logout");
+        logoutButton.setToolTipText("Logout from current session");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutButtonActionPerformed(evt);
+            }
+        });
+
+        accountComboBox.setModel(accountListModel);
+
+        openAccount.setText("Continue");
+        openAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openAccountActionPerformed(evt);
             }
         });
 
@@ -112,25 +109,26 @@ public class UserPage extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(openAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48))
             .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selectAccountText, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(selectAccountText, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(userAccountInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 764, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addressText, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                            .addComponent(addressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addressText, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(accountComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,15 +144,18 @@ public class UserPage extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(selectAccountText, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(userAccountInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addComponent(accountComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(logoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(openAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(171, 171, 171))
         );
 
         getAccessibleContext().setAccessibleDescription("");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
@@ -164,7 +165,31 @@ public class UserPage extends javax.swing.JFrame {
         Main.accountPage = null;
         Main.loginPage.setVisible(true);
     }//GEN-LAST:event_logoutButtonActionPerformed
-    public void accountButtonActionPerformed(java.awt.event.ActionEvent evt){
+
+    private void openAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAccountActionPerformed
+        String accountNumber = (String)accountComboBox.getSelectedItem();
+        int selectedIndex = accountComboBox.getSelectedIndex();
+        //int accountNumber;
+        if(selectedIndex!=0){
+            try{
+                //accountNumber = Integer.parseInt(accountNumberStr);
+                if( Main.accountPage == null){
+                    Main.accountPage = new AccountPage();
+                }
+                Main.accountPage.setAccountDetails(accountNumber,username);
+                Main.accountPage.repaint();
+                Main.accountPage.setVisible(true);
+                Main.userPage.setVisible(false);
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(this, e.toString(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this,"Select A valid account Number", "Error",JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_openAccountActionPerformed
+    /*public void accountButtonActionPerformed(java.awt.event.ActionEvent evt){
         javax.swing.JButton accountButton = (javax.swing.JButton)evt.getSource();
         String accountNumber = accountButton.getText();
         if (accountNumber == null) System.out.println("Account Button retuned NuLL");
@@ -176,22 +201,23 @@ public class UserPage extends javax.swing.JFrame {
         Main.accountPage.setVisible(true);
         Main.userPage.setVisible(false);
         
-    }
+    }*/
     
     private String username;
     private String name;
     private String address;
     private int customerId;
     private int numAccounts;
-    private ArrayList<Integer> accountList;
+    private javax.swing.DefaultComboBoxModel<String> accountListModel;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> accountComboBox;
     private javax.swing.JLabel addressLabel;
     private javax.swing.JLabel addressText;
     private javax.swing.JButton logoutButton;
     private javax.swing.JLabel nameField;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton openAccount;
     private javax.swing.JLabel selectAccountText;
-    private javax.swing.JScrollPane userAccountInfo;
-    private javax.swing.JPanel userAccountPanel;
     // End of variables declaration//GEN-END:variables
 }
