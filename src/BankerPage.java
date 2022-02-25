@@ -164,23 +164,25 @@ public class BankerPage extends javax.swing.JFrame {
     }//GEN-LAST:event_viewUserListButtonActionPerformed
 
     private void approveLoanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveLoanButtonActionPerformed
-        /*DefaultTableModel dtm = new DefaultTableModel(
-                new Object[][] {},new String[]{"Customer Id","Account number","Name", "Balance",""});
+        DefaultTableModel dtm = new DefaultTableModel(
+                new Object[][] {},new String[]{"Loan no","Customer Id","Name", "Loan Amount","Years","Intrest"});
         try{
             Statement st = Main.conn.createStatement();
-            ResultSet rs = st.executeQuery("" );
+            ResultSet rs = st.executeQuery("SELECT L.LOANNO,C.CUSTOMER_ID,C.CUS_NAME,L.AMOUNT,L.YEARS,L.INTEREST FROM CUSTOMER AS C JOIN LOAN AS L ON C.CUSTOMER_ID = L.CUSTOMER_ID;" );
             while(rs.next()){
                 dtm.addRow(new Object[] {
+                    rs.getInt("LOANNO"),
                     rs.getInt("CUSTOMER_ID"),
-                    rs.getInt("ACCOUNTNO"),
                     rs.getString("CUS_NAME"),
-                    rs.getFloat("BALANCE")
+                    rs.getFloat("AMOUNT"),
+                    rs.getInt("YEARS"),
+                    rs.getFloat("INTEREST"),
                 });
             }
-            new UserList(dtm).setVisible(true);
+            new LoanList(dtm).setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(BankerPage.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }//GEN-LAST:event_approveLoanButtonActionPerformed
 
     /**
