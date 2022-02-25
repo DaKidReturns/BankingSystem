@@ -31,6 +31,7 @@ public class AccountPage extends javax.swing.JFrame {
         };
         loanTypes = new DefaultComboBoxModel<String>();
         getLoanTypes(loanTypes);
+        initTransactionTable();
         initComponents();
     }
 
@@ -48,7 +49,7 @@ public class AccountPage extends javax.swing.JFrame {
         balanceLabel = new javax.swing.JLabel();
         balanceAmount = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        userControlPane = new javax.swing.JTabbedPane();
         Withdraw = new javax.swing.JPanel();
         enterWithdrawAmountLabel = new javax.swing.JLabel();
         withdrawAmount = new javax.swing.JSpinner();
@@ -68,6 +69,10 @@ public class AccountPage extends javax.swing.JFrame {
         yearsValue = new javax.swing.JLabel();
         loanAmountVerify = new NumberVerifier();
         loanAmountField = new javax.swing.JTextField();
+        TransactionsPane = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TransactionTable = new javax.swing.JTable();
+        TransactionTable.setEnabled(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Account");
@@ -88,7 +93,7 @@ public class AccountPage extends javax.swing.JFrame {
             }
         });
 
-        jTabbedPane1.setName(""); // NOI18N
+        userControlPane.setName(""); // NOI18N
 
         enterWithdrawAmountLabel.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
         enterWithdrawAmountLabel.setText("Enter Amount");
@@ -130,7 +135,7 @@ public class AccountPage extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Withdraw", Withdraw);
+        userControlPane.addTab("Withdraw", Withdraw);
 
         enterAmountDeposit.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
         enterAmountDeposit.setText("Enter Amount");
@@ -171,7 +176,7 @@ public class AccountPage extends javax.swing.JFrame {
                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Deposit", Deposit);
+        userControlPane.addTab("Deposit", Deposit);
 
         loanTypeLabel.setText("Select Loan Type");
 
@@ -250,7 +255,31 @@ public class AccountPage extends javax.swing.JFrame {
                 .addGap(24, 24, 24))
         );
 
-        jTabbedPane1.addTab("Loan", Loan);
+        userControlPane.addTab("Loan", Loan);
+
+        TransactionsPane.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TransactionsPaneFocusGained(evt);
+            }
+        });
+
+        TransactionTable.setModel(dtm);
+        TransactionTable.getTableHeader().setResizingAllowed(false);
+        TransactionTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(TransactionTable);
+
+        javax.swing.GroupLayout TransactionsPaneLayout = new javax.swing.GroupLayout(TransactionsPane);
+        TransactionsPane.setLayout(TransactionsPaneLayout);
+        TransactionsPaneLayout.setHorizontalGroup(
+            TransactionsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+        );
+        TransactionsPaneLayout.setVerticalGroup(
+            TransactionsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+        );
+
+        userControlPane.addTab("Transactions", TransactionsPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -260,7 +289,7 @@ public class AccountPage extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(userControlPane, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,7 +320,7 @@ public class AccountPage extends javax.swing.JFrame {
                     .addComponent(balanceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                     .addComponent(balanceAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(74, 74, 74)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(userControlPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(62, Short.MAX_VALUE))
         );
 
@@ -319,6 +348,7 @@ public class AccountPage extends javax.swing.JFrame {
                 try {
                     Statement st = Main.conn.createStatement();
                     st.executeUpdate("UPDATE ACCOUNT SET BALANCE = BALANCE - " + amount);
+                    st.executeUpdate("INSERT INTO TRANSACTN (ACCOUNTNO,STATUS,AMOUNT) VALUES ( " + this.accNumber + ",'WITHDRAWAL',"+amount+")");
                     JOptionPane.showMessageDialog(Main.accountPage,
                         "Withdrawn Rs." + amount +" ",
                         "Success",
@@ -354,6 +384,7 @@ public class AccountPage extends javax.swing.JFrame {
                 try {
                     Statement st = Main.conn.createStatement();
                     st.executeUpdate("UPDATE ACCOUNT SET BALANCE = BALANCE + " + amount);
+                    st.executeUpdate("INSERT INTO TRANSACTN (ACCOUNTNO,STATUS,AMOUNT) VALUES ( "+ this.accNumber + ",'DEPOSIT',"+amount+")");
                     JOptionPane.showMessageDialog(Main.accountPage,
                         "Deposited Rs." + amount +" ",
                         "Success",
@@ -440,6 +471,11 @@ public class AccountPage extends javax.swing.JFrame {
         
     }//GEN-LAST:event_requestLoanActionPerformed
 
+    private void TransactionsPaneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TransactionsPaneFocusGained
+        // TODO add your handling code here:
+        createTransactionTable();
+    }//GEN-LAST:event_TransactionsPaneFocusGained
+
     public void setAccountDetails(String accNumber,String userName){
         try{
             Statement st = Main.conn.createStatement();
@@ -455,8 +491,37 @@ public class AccountPage extends javax.swing.JFrame {
         this.accountNumber.setText(String.valueOf(accNumber));
         this.balanceAmount.setText(String.valueOf(balance));
         this.userName = userName;
+
+        createTransactionTable();
         this.repaint();
         System.out.println(balance+"  "+accNumber);
+    }
+    private void initTransactionTable(){
+            String[] transactionColumns = new String [] {
+                "Amount", "Type"
+            };
+        dtm = new javax.swing.table.DefaultTableModel( new Object[][]{  
+        }, transactionColumns);
+    }
+    
+    public void createTransactionTable(){
+        initTransactionTable();
+        try {
+            Statement st = Main.conn.createStatement();
+            ResultSet rs = st.executeQuery("Select * from TRANSACTN WHERE ACCOUNTNO = "+this.accNumber+" ORDER BY TRANSID DESC");
+            while(rs.next()){
+                dtm.addRow(
+                        new Object[]{
+                            String.valueOf(rs.getDouble("AMOUNT")),
+                            rs.getString("STATUS")
+                        }   
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        TransactionTable.setModel(dtm);
+        TransactionTable.repaint();
     }
     
     
@@ -521,11 +586,14 @@ public class AccountPage extends javax.swing.JFrame {
     private String userName;
     private DefaultComboBoxModel<String> loanTypes;
     private NumberVerifier loanAmountVerify;
+    private javax.swing.table.DefaultTableModel dtm;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Deposit;
     private javax.swing.JPanel Loan;
+    private javax.swing.JTable TransactionTable;
+    private javax.swing.JPanel TransactionsPane;
     private javax.swing.JPanel Withdraw;
     private javax.swing.JLabel accountNumber;
     private javax.swing.JLabel accountNumberLabel;
@@ -538,12 +606,13 @@ public class AccountPage extends javax.swing.JFrame {
     private javax.swing.JLabel enterWithdrawAmountLabel;
     private javax.swing.JLabel intrestAmount;
     private javax.swing.JLabel intrestLabel;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField loanAmountField;
     private javax.swing.JLabel loanAmountLabel;
     private javax.swing.JComboBox<String> loanTypeCombo;
     private javax.swing.JLabel loanTypeLabel;
     private javax.swing.JButton requestLoan;
+    private javax.swing.JTabbedPane userControlPane;
     private javax.swing.JSpinner withdrawAmount;
     private javax.swing.JButton withdrawButton;
     private javax.swing.JLabel yearsLabel;

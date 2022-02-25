@@ -17,7 +17,7 @@ public class Main {
     public static LoginPage loginPage;
     public static UserPage userPage;
     public static AccountPage accountPage;
-    //public static UserPage userPage;
+    public static BankerPage bankerPage;
     
     public static void main(String args[]) {
         initDatabase();
@@ -60,7 +60,7 @@ public class Main {
             Statement stmt = conn.createStatement();
             rs = stmt.executeQuery("Select * from LOGINTAB");
             while(rs.next()){
-                System.out.println(rs.getString("USERNAME")+" "+rs.getString("PASSWORD"));
+                System.out.println(rs.getString("USERNAME")+" "+rs.getString("PASSWORD")+" "+ rs.getString("USERTYPE"));
             }
             
         }
