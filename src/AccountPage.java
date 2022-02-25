@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 public class AccountPage extends javax.swing.JFrame {
@@ -65,6 +66,8 @@ public class AccountPage extends javax.swing.JFrame {
         requestLoan = new javax.swing.JButton();
         intrestAmount = new javax.swing.JLabel();
         yearsValue = new javax.swing.JLabel();
+        loanAmountVerify = new NumberVerifier();
+        loanAmountField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Account");
@@ -91,6 +94,7 @@ public class AccountPage extends javax.swing.JFrame {
         enterWithdrawAmountLabel.setText("Enter Amount");
 
         withdrawAmount.setModel(new SpinnerNumberModel(0.0,0.0,999_999_999.99,1));
+        withdrawAmount.setToolTipText("Enter The value you want to withdraw");
 
         withdrawButton.setText("Withdraw");
         withdrawButton.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +195,10 @@ public class AccountPage extends javax.swing.JFrame {
             }
         });
 
+        loanAmountField.setFont(new java.awt.Font("Fira Sans Semi-Light", 0, 18)); // NOI18N
+        loanAmountField.setText("0");
+        loanAmountField.setInputVerifier(loanAmountVerify);
+
         javax.swing.GroupLayout LoanLayout = new javax.swing.GroupLayout(Loan);
         Loan.setLayout(LoanLayout);
         LoanLayout.setHorizontalGroup(
@@ -202,9 +210,11 @@ public class AccountPage extends javax.swing.JFrame {
                         .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(loanTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(loanTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
-                        .addGap(153, 153, 153)
-                        .addComponent(loanAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(100, Short.MAX_VALUE))
+                        .addGap(108, 108, 108)
+                        .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(loanAmountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                            .addComponent(loanAmountField))
+                        .addContainerGap(145, Short.MAX_VALUE))
                     .addGroup(LoanLayout.createSequentialGroup()
                         .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(intrestLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
@@ -221,22 +231,22 @@ public class AccountPage extends javax.swing.JFrame {
             LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoanLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(loanTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(loanAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loanTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(loanAmountField)
+                    .addComponent(loanTypeCombo, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(intrestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(intrestAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(requestLoan)
-                    .addComponent(yearsValue, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(LoanLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(yearsLabel)))
+                .addGroup(LoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(requestLoan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(yearsValue, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(yearsLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(24, 24, 24))
         );
 
@@ -390,6 +400,44 @@ public class AccountPage extends javax.swing.JFrame {
 
     private void requestLoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestLoanActionPerformed
         // TODO add your handling code here:
+        if(loanAmountVerify.verify(loanAmountField)){ // use loan amount verify to verify the content in the amount field
+            if(!((String)loanTypeCombo.getSelectedItem()).equals("Select Loan Type")){
+                // If default option is not selected
+                try {
+                        double loanAmount = Double.parseDouble(loanAmountField.getText());
+                        Statement st  = Main.conn.createStatement();
+                        st.execute("INSERT INTO LOAN (CUSTOMER_ID,AMOUNT,YEARS,INTEREST) VALUES "
+                                + "( (SELECT CUSTOMER_ID FROM ACCOUNT WHERE ACCOUNTNO = '"
+                                +this.accNumber+"'),"
+                                +loanAmount +","
+                                +this.loanYears +","
+                                +this.loanIntrest +")");
+                        JOptionPane.showMessageDialog(Main.accountPage,
+                            "Loan Request Sent!!", 
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } catch (SQLException ex) {
+                           JOptionPane.showMessageDialog(Main.accountPage,
+                            ex.toString(), 
+                            "SQL Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else{
+                // Show error if the default option is sected
+                JOptionPane.showMessageDialog(Main.accountPage,
+                    "Select A loan type", 
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        
+        }else{
+            JOptionPane.showMessageDialog(Main.accountPage,
+                    "Enter a Proper amount for loan", 
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_requestLoanActionPerformed
 
     public void setAccountDetails(String accNumber,String userName){
@@ -410,6 +458,7 @@ public class AccountPage extends javax.swing.JFrame {
         this.repaint();
         System.out.println(balance+"  "+accNumber);
     }
+    
     
     private static void getLoanTypes(DefaultComboBoxModel<String> loanTypes){
         loanTypes.addElement("Select Loan Type");
@@ -471,6 +520,7 @@ public class AccountPage extends javax.swing.JFrame {
     private int loanYears;
     private String userName;
     private DefaultComboBoxModel<String> loanTypes;
+    private NumberVerifier loanAmountVerify;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -489,6 +539,7 @@ public class AccountPage extends javax.swing.JFrame {
     private javax.swing.JLabel intrestAmount;
     private javax.swing.JLabel intrestLabel;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField loanAmountField;
     private javax.swing.JLabel loanAmountLabel;
     private javax.swing.JComboBox<String> loanTypeCombo;
     private javax.swing.JLabel loanTypeLabel;
@@ -498,4 +549,24 @@ public class AccountPage extends javax.swing.JFrame {
     private javax.swing.JLabel yearsLabel;
     private javax.swing.JLabel yearsValue;
     // End of variables declaration//GEN-END:variables
+
+}
+
+class NumberVerifier extends javax.swing.InputVerifier{
+    @Override
+    public boolean verify(javax.swing.JComponent input){
+        JTextField jf = (JTextField) input;
+        String text = jf.getText();
+        try{
+            double val = Double.parseDouble(text);
+            if (val <= 0){
+                return false;
+            }
+        }
+        catch(NumberFormatException ex){
+            return false;
+        }
+        return true;
+        
+    }
 }

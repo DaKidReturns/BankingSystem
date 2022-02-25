@@ -170,6 +170,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JSpinner" name="withdrawAmount">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="Enter The value you want to withdraw"/>
+              </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="withdrawAmount.setModel(new SpinnerNumberModel(0.0,0.0,999_999_999.99,1));"/>
               </AuxValues>
@@ -269,9 +272,12 @@
                                   <Component id="loanTypeCombo" max="32767" attributes="0"/>
                                   <Component id="loanTypeLabel" pref="211" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
-                              <Component id="loanAmountLabel" min="-2" pref="218" max="-2" attributes="0"/>
-                              <EmptySpace pref="100" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="loanAmountLabel" pref="218" max="32767" attributes="0"/>
+                                  <Component id="loanAmountField" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace pref="145" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -295,25 +301,25 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="loanTypeLabel" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                          <Component id="loanAmountLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="loanTypeLabel" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Component id="loanAmountLabel" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="loanTypeCombo" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="loanAmountField" max="32767" attributes="0"/>
+                          <Component id="loanTypeCombo" pref="42" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace pref="49" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="intrestLabel" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                           <Component id="intrestAmount" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="requestLoan" min="-2" max="-2" attributes="0"/>
-                          <Component id="yearsValue" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                              <Component id="yearsLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="requestLoan" alignment="1" max="32767" attributes="0"/>
+                          <Component id="yearsValue" alignment="1" pref="40" max="32767" attributes="0"/>
+                          <Component id="yearsLabel" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
@@ -365,6 +371,21 @@
             <Component class="javax.swing.JLabel" name="intrestAmount">
             </Component>
             <Component class="javax.swing.JLabel" name="yearsValue">
+            </Component>
+            <Component class="javax.swing.JTextField" name="loanAmountField">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Fira Sans Semi-Light" size="18" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="0"/>
+                <Property name="inputVerifier" type="javax.swing.InputVerifier" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="loanAmountVerify" type="code"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="loanAmountVerify = new NumberVerifier();"/>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="AccountPage_loanAmountField"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
