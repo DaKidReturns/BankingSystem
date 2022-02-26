@@ -178,7 +178,7 @@ public class LoginPage extends javax.swing.JFrame {
                 Main.userPage.setVisible(true);
                 this.setVisible(false);
             }else if(userType.equals("BANKER")){
-                Main.bankerPage = new BankerPage();
+                Main.bankerPage = new BankerPage(username);
                 Main.bankerPage.setVisible(true);
                 this.setVisible(false);
             }
