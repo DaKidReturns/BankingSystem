@@ -88,6 +88,7 @@ public class UserPage extends javax.swing.JFrame {
 
         logoutButton.setBackground(new java.awt.Color(255, 94, 94));
         logoutButton.setForeground(new java.awt.Color(26, 26, 26));
+        logoutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout.png"))); // NOI18N
         logoutButton.setText("Logout");
         logoutButton.setToolTipText("Logout from current session");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -147,9 +148,9 @@ public class UserPage extends javax.swing.JFrame {
                 .addComponent(accountComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(logoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(logoutButton, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(openAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(171, 171, 171))
+                .addGap(153, 153, 153))
         );
 
         getAccessibleContext().setAccessibleDescription("");

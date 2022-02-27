@@ -86,6 +86,7 @@ public class AccountPage extends javax.swing.JFrame {
 
         balanceAmount.setText(String.valueOf(balance));
 
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/back.png"))); // NOI18N
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

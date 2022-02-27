@@ -99,6 +99,7 @@ public class BankerPage extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("WELCOME BANKER");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout.png"))); // NOI18N
         jButton1.setText("Logout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,7 +176,7 @@ public class BankerPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserButtonActionPerformed
-        // TODO add your handling code here:
+       new UserReg().setVisible(true);
 
     }//GEN-LAST:event_addUserButtonActionPerformed
 
@@ -197,7 +198,7 @@ public class BankerPage extends javax.swing.JFrame {
                     rs.getFloat("BALANCE")
                 });
             }
-            new UserList(dtm).setVisible(true);
+            new AccountList(dtm).setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(BankerPage.class.getName()).log(Level.SEVERE, null, ex);
         }
