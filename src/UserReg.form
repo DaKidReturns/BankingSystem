@@ -71,8 +71,8 @@
                       <Component id="PHONENO" max="32767" attributes="0"/>
                       <Component id="EMAIL" alignment="0" max="32767" attributes="0"/>
                       <Component id="GETUSERNAME" alignment="0" max="32767" attributes="0"/>
-                      <Component id="GETPASSWORD" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
+                      <Component id="GETPASSWORD" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="97" max="32767" attributes="0"/>
               </Group>
@@ -85,22 +85,28 @@
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   <Component id="headingLabel" min="-2" pref="48" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="nameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="NAME" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="nameIcon" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="nameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="NAME" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="phoneNumberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="PHONENO" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="phoneNo" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="phoneNumberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="PHONENO" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="EMAIL" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="emailText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="emailIcon" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="EMAIL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="emailText" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -118,7 +124,7 @@
                       </Group>
                       <Component id="createUserNameIcon" alignment="1" min="-2" pref="34" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -130,7 +136,7 @@
                       </Group>
                       <Component id="passwordIcon" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="44" max="32767" attributes="0"/>
+                  <EmptySpace pref="52" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -208,8 +214,6 @@
         </Container>
         <Component class="javax.swing.JTextField" name="GETUSERNAME">
         </Component>
-        <Component class="javax.swing.JTextField" name="GETPASSWORD">
-        </Component>
         <Component class="javax.swing.JButton" name="SUBMIT">
           <Properties>
             <Property name="text" type="java.lang.String" value="SUBMIT"/>
@@ -252,6 +256,8 @@
               <Image iconType="3" name="/icons/pass.png"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="GETPASSWORD">
         </Component>
       </SubComponents>
     </Container>

@@ -1,9 +1,14 @@
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 /**
  *
  * @author uthar
@@ -43,13 +48,13 @@ public class UserReg extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ADDRESS = new javax.swing.JTextArea();
         GETUSERNAME = new javax.swing.JTextField();
-        GETPASSWORD = new javax.swing.JTextField();
         SUBMIT = new javax.swing.JButton();
         nameIcon = new javax.swing.JLabel();
         phoneNo = new javax.swing.JLabel();
         emailIcon = new javax.swing.JLabel();
         addressIcon = new javax.swing.JLabel();
         passwordIcon = new javax.swing.JLabel();
+        GETPASSWORD = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -130,8 +135,8 @@ public class UserReg extends javax.swing.JFrame {
                     .addComponent(PHONENO)
                     .addComponent(EMAIL)
                     .addComponent(GETUSERNAME)
-                    .addComponent(GETPASSWORD)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(GETPASSWORD))
                 .addContainerGap(97, Short.MAX_VALUE))
             .addComponent(headingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -141,20 +146,23 @@ public class UserReg extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(headingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameLabel)
-                    .addComponent(NAME, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameIcon))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameIcon)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nameLabel)
+                        .addComponent(NAME, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneNumberLabel)
-                    .addComponent(PHONENO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(phoneNo))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(phoneNo)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(phoneNumberLabel)
+                        .addComponent(PHONENO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(EMAIL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailText)
-                    .addComponent(emailIcon))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(emailIcon)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(EMAIL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(emailText)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,7 +175,7 @@ public class UserReg extends javax.swing.JFrame {
                         .addComponent(createUsernameLabel)
                         .addComponent(GETUSERNAME, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(createUserNameIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -176,7 +184,7 @@ public class UserReg extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addComponent(SUBMIT))
                     .addComponent(passwordIcon))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -199,33 +207,36 @@ public class UserReg extends javax.swing.JFrame {
     }//GEN-LAST:event_NAMEActionPerformed
 
     private void SUBMITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SUBMITActionPerformed
-        // TODO add your handling code here:
-        String name=NAME.getText();
-        String phoneno=PHONENO.getText();
-        String email=EMAIL.getText();
-        String address=ADDRESS.getText();
-        String username=GETUSERNAME.getText();
-        String password=GETPASSWORD.getText();
-        try{
-            String query= "insert into LOGINTAB values(?,?,?)";
-            PreparedStatement ps=Main.conn.prepareStatement(query);
-            ps.setString(1,username);
-            ps.setString(2,password);
-            ps.setString(3,"CUST");
-            ps.execute();
-            
-            ps = Main.conn.prepareStatement("INSERT INTO CUSTOMER(CUS_NAME,CUS_ADDRESS,USERNAME,EMAIL,PHONE) VALUES (?,?,?,?,?)");
-            ps.setString(1,name);
-            ps.setString(2,address);
-            ps.setString(3,username);
-            ps.setString(4,email);
-            ps.setString(5,phoneno);
-            ps.execute();
-            
-            this.dispose();
-        }catch(Exception ex){
-            System.out.println(ex);
-            
+        
+        if(verifyInput()){
+            String name=NAME.getText();
+            String phoneno=PHONENO.getText();
+            String email=EMAIL.getText();
+            String address=ADDRESS.getText();
+            String username=GETUSERNAME.getText();
+            String password=GETPASSWORD.getText();
+
+            try{
+                String query= "insert into LOGINTAB values(?,?,?)";
+                PreparedStatement ps=Main.conn.prepareStatement(query);
+                ps.setString(1,username);
+                ps.setString(2,password);
+                ps.setString(3,"CUST");
+                ps.execute();
+
+                ps = Main.conn.prepareStatement("INSERT INTO CUSTOMER(CUS_NAME,CUS_ADDRESS,USERNAME,EMAIL,PHONE) VALUES (?,?,?,?,?)");
+                ps.setString(1,name);
+                ps.setString(2,address);
+                ps.setString(3,username);
+                ps.setString(4,email);
+                ps.setString(5,phoneno);
+                ps.execute();
+
+                this.dispose();
+            }catch(Exception ex){
+                System.out.println(ex);
+
+            }
         }
     }//GEN-LAST:event_SUBMITActionPerformed
 
@@ -267,7 +278,7 @@ public class UserReg extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ADDRESS;
     private javax.swing.JTextField EMAIL;
-    private javax.swing.JTextField GETPASSWORD;
+    private javax.swing.JPasswordField GETPASSWORD;
     private javax.swing.JTextField GETUSERNAME;
     private javax.swing.JTextField NAME;
     private javax.swing.JTextField PHONENO;
@@ -288,4 +299,54 @@ public class UserReg extends javax.swing.JFrame {
     private javax.swing.JLabel phoneNo;
     private javax.swing.JLabel phoneNumberLabel;
     // End of variables declaration//GEN-END:variables
+
+    private boolean verifyInput() {
+        String name=NAME.getText();
+        String phoneno=PHONENO.getText();
+        String email=EMAIL.getText();
+        String address=ADDRESS.getText();
+        String username=GETUSERNAME.getText();
+        char[] password=GETPASSWORD.getPassword();
+        String passStr = String.valueOf(password);
+        if(name.equals("")||username.equals("")||phoneno.equals("")||email.equals("")||address.equals("")||passStr.equals("")){
+            JOptionPane.showMessageDialog(this, "All the fields are compulsory", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if(phoneno.length()!=10){
+            JOptionPane.showMessageDialog(this, "Phone number must be of length 10","Error", JOptionPane.ERROR_MESSAGE);return false;
+        }
+        if(passStr.length()<=6){
+            JOptionPane.showMessageDialog(this, "Password must be of atleast 7 charecters", "Error", JOptionPane.ERROR_MESSAGE);return false;
+        }
+        if(username.length()<=6){
+            JOptionPane.showMessageDialog(this, "Username must be of atleast 7 charecters", "Error", JOptionPane.ERROR_MESSAGE);return false;
+        }
+        Pattern emailPat = Pattern.compile("[\\w|\\.|d]+@\\w+\\.\\w+");
+        Matcher matcher = emailPat.matcher(email);
+        if(!matcher.find()){
+            JOptionPane.showMessageDialog(this, "Enter a proper email addrress", "Error", JOptionPane.ERROR_MESSAGE);return false;
+        }
+          try {
+              Statement st = Main.conn.createStatement();
+              ResultSet rs = st.executeQuery("SELECT USERNAME FROM LOGINTAB WHERE USERNAME = \""+username+"\"");
+              if (rs.next()){
+                  JOptionPane.showMessageDialog(this, "Username already in use", "Error", JOptionPane.ERROR_MESSAGE);return false;
+              }
+              rs.close();
+              rs = st.executeQuery("SELECT * FROM CUSTOMER WHERE EMAIL = \""+email+"\"");
+              if (rs.next()){
+                  JOptionPane.showMessageDialog(this, "Email already in use", "Error", JOptionPane.ERROR_MESSAGE);return false;
+              }
+              rs.close();
+              rs = st.executeQuery("SELECT * FROM CUSTOMER WHERE PHONE = \""+phoneno+"\"");
+              if (rs.next()){
+                  JOptionPane.showMessageDialog(this, "Email already in use", "Error", JOptionPane.ERROR_MESSAGE);return false;
+              }
+              st.close();
+          } catch (SQLException ex) {
+              Logger.getLogger(UserReg.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        
+        return true;
+    }
 }
